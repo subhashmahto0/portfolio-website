@@ -1,4 +1,89 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask Questions - AI Assistant</title>
+    <script src="https://www.gstatic.com/ai/generativelanguage/v1beta/js/generativelanguage.min.js"></script>
+    <style>
+        body {
+            background-color: white;
+            color: black;
+        }
+        .error-message {
+            color: black;
+            padding: 10px;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask Questions - AI Assistant</title>
+    <script src="https://www.gstatic.com/ai/generativelanguage/v1beta/js/generativelanguage.min.js"></script>
+</head>
+<body>
+    <div class="question-section">
+        <h2>Ask a Question</h2>
+        <textarea id="questionInput" placeholder="Type your question here..." rows="4"></textarea>
+        <button onclick="askQuestion()">Submit Question</button>
+        <div id="answer"></div>
+    </div>
+
+    <style>
+        .question-section {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 20px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #answer {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            min-height: 50px;
+        }
+    </style>
+
+    <script>
+        const API_KEY = 'AIzaSyCDHQQzEXgQUoHhEGpZUVqNg86MDUqILls';
+        const genAI = new GoogleGenerativeAI(API_KEY);
+
+        async function askQuestion() {
+            const questionInput = document.getElementById('questionInput');
+            const answerDiv = document.getElementById('answer');
+            const question = questionInput.value;
+
+            if (!question.trim()) {
+                alert('Please enter a question');
+                return;
+            }
+
+            try {
+                answerDiv.innerHTML = 'Thinking...';
+                const result = await genAI.generateText(question);
+                answerDiv.innerHTML = result;
+            } catch (error) {
+                console.error('Error:', error);
+                answerDiv.innerHTML = 'Sorry, there was an error processing your question.';
+            }
+        }
+    </script>
+</body>
 <script src="https://www.gstatic.com/ai/generativelanguage/v1beta/js/generativelanguage.min.js"></script>
 <script>
 // Initialize Gemini API
@@ -22,7 +107,13 @@ document.addEventListener('DOMContentLoaded', () => {
     cursor: pointer;
     font-size: 24px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    z-index: 1000;
+    z-index: 9999;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
   `;
 
   let recognition;
@@ -150,6 +241,14 @@ document.addEventListener('DOMContentLoaded', () => {
     <footer>
         <p>&copy; 2024 Subhash Mahto. All rights reserved.</p>
     </footer>
+
+    <div class="voice-chat-container">
+        <button id="voice-chat-button" class="voice-chat-button">
+            <span class="microphone-icon">🎤</span>
+        </button>
+        <span id="recording-status" class="recording-status">Click to start recording</span>
+    </div>
+    <script src="voice-chat.js"></script>
 </body>
 </html>
 
