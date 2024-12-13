@@ -326,9 +326,11 @@
             cursor: pointer;
             transition: all 0.3s;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
         #answer {
             margin-top: 20px;
             padding: 15px;
@@ -337,7 +339,7 @@
             border: 1px solid #ddd;
         }
     </style>
-     <script src="https://www.gstatic.com/ai/generativelanguage/v1beta/js/generativelanguage.min.js"></script>
+    <script src="https://www.gstatic.com/ai/generativelanguage/v1beta/js/generativelanguage.min.js"></script>
 
 </head>
 
@@ -426,7 +428,7 @@
             </div>
         </section>
 
-         <div class="question-section">
+        <div class="question-section">
             <h2>Ask a Question</h2>
             <textarea id="questionInput" placeholder="Type your question here..." rows="4"></textarea>
             <button onclick="askQuestion()">Submit Question</button>
@@ -442,14 +444,25 @@
         <button id="voice-chat-button" class="voice-chat-button">
             <span class="microphone-icon">🎤</span>
         </button>
-         <span id="recording-status" class="recording-status">Click to start recording</span>
+        <span id="recording-status" class="recording-status">Click to start recording</span>
     </div>
 
 
     <script>
-          // Initialize Gemini API
-        const API_KEY = 'YOUR_API_KEY'; // REPLACE THIS WITH YOUR ACTUAL API KEY
-        const genAI = new google.generativeai.GenerativeModel({ model: "gemini-pro",  apiKey: API_KEY });
+        // Initialize Gemini API
+        const API_KEY = 'AIzaSyDiADeaDODJB5WT7LgU-U2pOIOBqLtHrbc'; // Replace with your actual API key
+        let genAI; // Declare genAI outside any function to ensure it's globally accessible
+        // Initialize Gemini API once the script runs
+        window.onload = async function () {
+             try {
+                genAI = new google.generativeai.GenerativeModel({ model: "gemini-pro", apiKey: API_KEY });
+                console.log("Gemini API initialized successfully.");
+            } catch (error) {
+                console.error('Error initializing Gemini API:', error);
+                document.getElementById('answer').innerHTML = `Error initializing Gemini API. Please check your API key and browser security settings. Details: ${error.message}`;
+            }
+        }
+
 
         // Question-Answer Function
         async function askQuestion() {
@@ -462,70 +475,79 @@
                 return;
             }
 
-            try {
-                answerDiv.innerHTML = 'Thinking...';
+           try {
+               answerDiv.innerHTML = 'Thinking...';
+                if(!genAI){
+                     answerDiv.innerHTML ="Gemini AI not initialized. Please wait for page to load or refresh the page."
+                    return;
+                }
                 const result = await genAI.generateContent(question);
-                  const response = result.response;
-                if(response && response.text){
-                    answerDiv.innerHTML = response.text();
-                } else {
-                    answerDiv.innerHTML = "No response was received."
+                const response = result.response;
+               if(response && response.text){
+                   answerDiv.innerHTML = response.text();
+               } else {
+                   answerDiv.innerHTML = "No response was received.";
                 }
             } catch (error) {
                 console.error('Error:', error);
                 answerDiv.innerHTML = `Sorry, there was an error processing your question. ${error.message}`;
-            }
+           }
         }
 
         // Initialize Speech Recognition for voice chat
-        let recognition;
+         let recognition;
         if ('webkitSpeechRecognition' in window) {
             recognition = new webkitSpeechRecognition();
             recognition.continuous = false;
             recognition.interimResults = false;
 
-            recognition.onresult = async (event) => {
-              const transcript = event.results[0][0].transcript;
-              document.getElementById('recording-status').textContent = "Thinking...";
-               try {
-                    const result = await genAI.generateContent(transcript);
-                   const response = result.response;
-                   if (response && response.text) {
+             recognition.onresult = async (event) => {
+                const transcript = event.results[0][0].transcript;
+                 document.getElementById('recording-status').textContent = "Thinking...";
+                try {
+                 if(!genAI) {
+                     alert("Gemini API not initialized. Please wait for the page to load.");
+                        document.getElementById('recording-status').textContent = "Click to start recording";
+                        return;
+                    }
+                     const result = await genAI.generateContent(transcript);
+                    const response = result.response;
+                    if (response && response.text) {
                        alert(response.text()); // Show the result in an alert for now
                     } else {
                         alert("No response was received.");
                     }
-                   } catch (error) {
-                     console.error('Error:', error);
-                      alert(`Sorry, there was an error processing your request: ${error.message}`);
-                    }
-                  document.getElementById('recording-status').textContent = "Click to start recording";
-                 };
-             recognition.onstart = () => {
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert(`Sorry, there was an error processing your request: ${error.message}`);
+                 }
+                document.getElementById('recording-status').textContent = "Click to start recording";
+              };
+            recognition.onstart = () => {
                 document.getElementById('recording-status').textContent = "Listening...";
-             };
-            recognition.onerror = (event) =>{
-                 console.error('Speech recognition error', event);
-                 document.getElementById('recording-status').textContent ="Error. Please Try Again.";
+            };
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error', event);
+                document.getElementById('recording-status').textContent = "Error. Please Try Again.";
             }
-        } else{
-            document.getElementById('recording-status').textContent="Speech recognition not supported";
+        } else {
+            document.getElementById('recording-status').textContent = "Speech recognition not supported";
             document.getElementById('voice-chat-button').disabled = true;
         }
 
 
+
         // Voice Chat Button Functionality
         document.addEventListener('DOMContentLoaded', () => {
-        const button = document.getElementById('voice-chat-button');
-        button.addEventListener('click', () => {
-            if (recognition) {
-              recognition.start();
-            } else {
-                 alert('Speech recognition not supported in this browser');
-                }
-            });
-      });
-
+            const button = document.getElementById('voice-chat-button');
+            button.addEventListener('click', () => {
+                if (recognition) {
+                    recognition.start();
+                } else {
+                     alert('Speech recognition not supported in this browser');
+                 }
+             });
+        });
     </script>
 
 </body>
