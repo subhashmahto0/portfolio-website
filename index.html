@@ -1,4 +1,59 @@
 <!DOCTYPE html>
+<script src="https://www.gstatic.com/ai/generativelanguage/v1beta/js/generativelanguage.min.js"></script>
+<script>
+// Initialize Gemini API
+const API_KEY = 'AIzaSyDiADeaDODJB5WT7LgU-U2pOIOBqLtHrbc';
+const genAI = new GoogleGenerativeAI(API_KEY);
+
+// Create sticky voice chat button
+document.addEventListener('DOMContentLoaded', () => {
+  const button = document.createElement('button');
+  button.innerHTML = '🎤';
+  button.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+  `;
+
+  let recognition;
+  if ('webkitSpeechRecognition' in window) {
+    recognition = new webkitSpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onresult = async (event) => {
+      const transcript = event.results[0][0].transcript;
+      try {
+        const result = await genAI.generateText(transcript);
+        alert(result); // You may want to show this in a better UI
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+  }
+
+  button.addEventListener('click', () => {
+    if (recognition) {
+      recognition.start();
+    } else {
+      alert('Speech recognition not supported in this browser');
+    }
+  });
+
+  document.body.appendChild(button);
+});
+</script>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
