@@ -1,158 +1,346 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ask Questions - AI Assistant</title>
-    <script src="https://www.gstatic.com/ai/generativelanguage/v1beta/js/generativelanguage.min.js"></script>
+    <title>Subhash Mahto - Digital Marketing & WordPress Development</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
+            font-family: 'Inter', sans-serif;
             background-color: white;
             color: black;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
         }
+
         .error-message {
-            color: black;
+            color: red;
             padding: 10px;
             margin-top: 10px;
             text-align: center;
         }
-    </style>
-</head>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ask Questions - AI Assistant</title>
-    <script src="https://www.gstatic.com/ai/generativelanguage/v1beta/js/generativelanguage.min.js"></script>
-</head>
-<body>
-    <div class="question-section">
-        <h2>Ask a Question</h2>
-        <textarea id="questionInput" placeholder="Type your question here..." rows="4"></textarea>
-        <button onclick="askQuestion()">Submit Question</button>
-        <div id="answer"></div>
-    </div>
 
-    <style>
+        /* Navigation styles */
+        nav {
+            background: #f0f0f0;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #007bff;
+        }
+
+        /* Header styles */
+        #hero {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: auto;
+        }
+
+        #hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        #hero p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .btn-glow {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+            transition: all 0.3s;
+        }
+
+        .btn-glow:hover {
+            background: #0056b3;
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.5);
+        }
+
+        /* Main section styles */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 20px;
+        }
+
+        section {
+            margin-bottom: 3rem;
+            padding: 20px;
+        }
+
+        section h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        /* Skills section styles */
+        .skills-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .skill-card {
+            width: 300px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .skill-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .skill-card h3 {
+            margin-bottom: 10px;
+        }
+
+        /* Services section styles */
+        .services-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .service-column {
+            width: 45%;
+            padding: 20px;
+        }
+
+        .service-column h3 {
+            margin-bottom: 1rem;
+        }
+
+        .service-column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .service-column li {
+            margin-bottom: 0.5rem;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .service-column li::before {
+            content: "✔️";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        /* Contact section styles */
+        #contact {
+            text-align: center;
+        }
+
+        #contact p {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary,
+        .btn-outline,
+        .btn-whatsapp {
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #007bff;
+            border: 2px solid #007bff;
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 123, 255, 0.1);
+        }
+
+        .btn-whatsapp:hover {
+            background: #128C7E;
+        }
+
+
+        /* Footer styles */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Voice Chat Button */
+        .voice-chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .voice-chat-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            outline: none;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .voice-chat-button:hover {
+            background-color: #0056b3;
+        }
+
+        .recording-status {
+            position: absolute;
+            bottom: -25px;
+            right: -15px;
+            font-size: 0.8em;
+            color: black;
+            white-space: nowrap;
+        }
+
+        /* Question Section */
         .question-section {
             max-width: 800px;
             margin: 2rem auto;
             padding: 20px;
         }
+
         textarea {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
+            border: 1px solid #ccc;
         }
+
         button {
             padding: 10px 20px;
             background: #007bff;
             color: white;
             border: none;
             cursor: pointer;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
         #answer {
             margin-top: 20px;
             padding: 15px;
             background: #f5f5f5;
             min-height: 50px;
+            border: 1px solid #ddd;
         }
     </style>
+     <script src="https://www.gstatic.com/ai/generativelanguage/v1beta/js/generativelanguage.min.js"></script>
 
-    <script>
-        const API_KEY = 'AIzaSyCDHQQzEXgQUoHhEGpZUVqNg86MDUqILls';
-        const genAI = new GoogleGenerativeAI(API_KEY);
-
-        async function askQuestion() {
-            const questionInput = document.getElementById('questionInput');
-            const answerDiv = document.getElementById('answer');
-            const question = questionInput.value;
-
-            if (!question.trim()) {
-                alert('Please enter a question');
-                return;
-            }
-
-            try {
-                answerDiv.innerHTML = 'Thinking...';
-                const result = await genAI.generateText(question);
-                answerDiv.innerHTML = result;
-            } catch (error) {
-                console.error('Error:', error);
-                answerDiv.innerHTML = 'Sorry, there was an error processing your question.';
-            }
-        }
-    </script>
-</body>
-<script src="https://www.gstatic.com/ai/generativelanguage/v1beta/js/generativelanguage.min.js"></script>
-<script>
-// Initialize Gemini API
-const API_KEY = 'AIzaSyDiADeaDODJB5WT7LgU-U2pOIOBqLtHrbc';
-const genAI = new GoogleGenerativeAI(API_KEY);
-
-// Create sticky voice chat button
-document.addEventListener('DOMContentLoaded', () => {
-  const button = document.createElement('button');
-  button.innerHTML = '🎤';
-  button.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    z-index: 9999;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    outline: none;
-    -webkit-tap-highlight-color: transparent;
-  `;
-
-  let recognition;
-  if ('webkitSpeechRecognition' in window) {
-    recognition = new webkitSpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = false;
-
-    recognition.onresult = async (event) => {
-      const transcript = event.results[0][0].transcript;
-      try {
-        const result = await genAI.generateText(transcript);
-        alert(result); // You may want to show this in a better UI
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
-  }
-
-  button.addEventListener('click', () => {
-    if (recognition) {
-      recognition.start();
-    } else {
-      alert('Speech recognition not supported in this browser');
-    }
-  });
-
-  document.body.appendChild(button);
-});
-</script>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subhash Mahto - Digital Marketing & WordPress Development</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <nav>
         <div class="nav-container">
@@ -169,7 +357,8 @@ document.addEventListener('DOMContentLoaded', () => {
     <header id="hero">
         <div class="hero-content">
             <div class="profile-image">
-                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/20240112_094244.jpg-WsG3QyuUOCCZW7Jn4G39tMYXFt58Jt.jpeg" alt="Subhash Mahto">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/20240112_094244.jpg-WsG3QyuUOCCZW7Jn4G39tMYXFt58Jt.jpeg"
+                    alt="Subhash Mahto">
             </div>
             <h1>Subhash Mahto</h1>
             <p>Digital Marketing Specialist & WordPress Developer</p>
@@ -236,19 +425,109 @@ document.addEventListener('DOMContentLoaded', () => {
                 </a>
             </div>
         </section>
+
+         <div class="question-section">
+            <h2>Ask a Question</h2>
+            <textarea id="questionInput" placeholder="Type your question here..." rows="4"></textarea>
+            <button onclick="askQuestion()">Submit Question</button>
+            <div id="answer"></div>
+        </div>
     </main>
 
     <footer>
-        <p>&copy; 2024 Subhash Mahto. All rights reserved.</p>
+        <p>© 2024 Subhash Mahto. All rights reserved.</p>
     </footer>
 
     <div class="voice-chat-container">
         <button id="voice-chat-button" class="voice-chat-button">
             <span class="microphone-icon">🎤</span>
         </button>
-        <span id="recording-status" class="recording-status">Click to start recording</span>
+         <span id="recording-status" class="recording-status">Click to start recording</span>
     </div>
-    <script src="voice-chat.js"></script>
-</body>
-</html>
 
+
+    <script>
+          // Initialize Gemini API
+        const API_KEY = 'YOUR_API_KEY'; // REPLACE THIS WITH YOUR ACTUAL API KEY
+        const genAI = new google.generativeai.GenerativeModel({ model: "gemini-pro",  apiKey: API_KEY });
+
+        // Question-Answer Function
+        async function askQuestion() {
+            const questionInput = document.getElementById('questionInput');
+            const answerDiv = document.getElementById('answer');
+            const question = questionInput.value;
+
+            if (!question.trim()) {
+                alert('Please enter a question');
+                return;
+            }
+
+            try {
+                answerDiv.innerHTML = 'Thinking...';
+                const result = await genAI.generateContent(question);
+                  const response = result.response;
+                if(response && response.text){
+                    answerDiv.innerHTML = response.text();
+                } else {
+                    answerDiv.innerHTML = "No response was received."
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                answerDiv.innerHTML = `Sorry, there was an error processing your question. ${error.message}`;
+            }
+        }
+
+        // Initialize Speech Recognition for voice chat
+        let recognition;
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onresult = async (event) => {
+              const transcript = event.results[0][0].transcript;
+              document.getElementById('recording-status').textContent = "Thinking...";
+               try {
+                    const result = await genAI.generateContent(transcript);
+                   const response = result.response;
+                   if (response && response.text) {
+                       alert(response.text()); // Show the result in an alert for now
+                    } else {
+                        alert("No response was received.");
+                    }
+                   } catch (error) {
+                     console.error('Error:', error);
+                      alert(`Sorry, there was an error processing your request: ${error.message}`);
+                    }
+                  document.getElementById('recording-status').textContent = "Click to start recording";
+                 };
+             recognition.onstart = () => {
+                document.getElementById('recording-status').textContent = "Listening...";
+             };
+            recognition.onerror = (event) =>{
+                 console.error('Speech recognition error', event);
+                 document.getElementById('recording-status').textContent ="Error. Please Try Again.";
+            }
+        } else{
+            document.getElementById('recording-status').textContent="Speech recognition not supported";
+            document.getElementById('voice-chat-button').disabled = true;
+        }
+
+
+        // Voice Chat Button Functionality
+        document.addEventListener('DOMContentLoaded', () => {
+        const button = document.getElementById('voice-chat-button');
+        button.addEventListener('click', () => {
+            if (recognition) {
+              recognition.start();
+            } else {
+                 alert('Speech recognition not supported in this browser');
+                }
+            });
+      });
+
+    </script>
+
+</body>
+
+</html>
